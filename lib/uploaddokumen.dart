@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'dataakademik.dart';
+import 'package:portal_mhs/dataorangtua.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: FormPendaftaranScreen(),
+    home: DataDokumenScreen(),
     debugShowCheckedModeBanner: false,
   ));
 }
 
-class FormPendaftaranScreen extends StatelessWidget {
-  const FormPendaftaranScreen({super.key});
+class DataDokumenScreen extends StatelessWidget {
+  const DataDokumenScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +37,7 @@ class FormPendaftaranScreen extends StatelessWidget {
         ],
       ),
 
+      // body form
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 100),
         child: Column(
@@ -82,7 +83,7 @@ class FormPendaftaranScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: const Text(
-                            "1 dari 5",
+                            "4 dari 5",
                             style: TextStyle(color: Colors.white, fontSize: 12),
                           ),
                         ),
@@ -118,10 +119,10 @@ class FormPendaftaranScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _tabItem(Icons.person, "Data Pribadi", true),
+                    _tabItem(Icons.person, "Data Pribadi", false),
                     _tabItem(Icons.school, "Data Akademik", false),
                     _tabItem(Icons.group, "Data Orang Tua", false),
-                    _tabItem(Icons.upload_file, "Upload Dokumen", false),
+                    _tabItem(Icons.upload_file, "Upload Dokumen", true),
                     _tabItem(Icons.check_circle, "Review & Submit", false),
                   ],
                 ),
@@ -130,7 +131,7 @@ class FormPendaftaranScreen extends StatelessWidget {
 
             const SizedBox(height: 12),
 
-            // Card Data Pribadi
+            // Card Upload Dokumen
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Card(
@@ -144,10 +145,11 @@ class FormPendaftaranScreen extends StatelessWidget {
                       children: [
                         const Row(
                           children: [
-                            Icon(Icons.person_outline),
+                            Icon(Icons.upload_file_outlined,
+                                color: Colors.blue),
                             SizedBox(width: 8),
                             Text(
-                              "Data Pribadi",
+                              "Upload Dokumen",
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             )
@@ -157,10 +159,12 @@ class FormPendaftaranScreen extends StatelessWidget {
                         const Text("Informasi personal dan kontak",
                             style: TextStyle(fontSize: 12, color: Colors.grey)),
                         const SizedBox(height: 12),
-                        _inputField("Nama Lengkap"),
-                        _inputField("NIK"),
-                        _inputField("Tempat Lahir"),
-                        _inputField("Tanggal Lahir"),
+
+                        // Daftar Upload
+                        _uploadCard("Ijazah/SKL"),
+                        _uploadCard("Kartu Keluarga"),
+                        _uploadCard("Akta Kelahiran"),
+                        _uploadCard("Pas Foto 3x4"),
                       ]),
                 ),
               ),
@@ -169,7 +173,7 @@ class FormPendaftaranScreen extends StatelessWidget {
         ),
       ),
 
-      // bagian bawah
+      // bagian bawah (fixed)
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
@@ -180,12 +184,39 @@ class FormPendaftaranScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Baris atas
+            // Baris atas (Sebelumnya + Simpan Draft)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _secondaryButton("<   Sebelumnya"),
-                _secondaryButtonWithIcon("Simpan Draft", Icons.save_outlined),
+                // Tombol Sebelumnya
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade300),
+                    color: Colors.grey.shade100,
+                  ),
+                  child: const Text("<   Sebelumnya",
+                      style: TextStyle(color: Colors.grey)),
+                ),
+                // Tombol Simpan Draft
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade300),
+                    color: Colors.white,
+                  ),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.save_outlined, size: 18),
+                      SizedBox(width: 6),
+                      Text("Simpan Draft"),
+                    ],
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 10),
@@ -198,7 +229,7 @@ class FormPendaftaranScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const DataAkademikScreen()),
+                        builder: (context) => const DataOrangTuaScreen()),
                   );
                 },
                 child: Container(
@@ -257,72 +288,54 @@ class FormPendaftaranScreen extends StatelessWidget {
     );
   }
 
-  Widget _inputField(String label) {
+  Widget _uploadCard(String title) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-              color: Colors.black87,
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              offset: const Offset(0, 2),
+              blurRadius: 4,
+            )
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Icon(Icons.upload_rounded, size: 28, color: Colors.black54),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
-          ),
-          const SizedBox(height: 6),
-          TextFormField(
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.grey.shade300),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.grey.shade300),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Colors.blue, width: 1.5),
-              ),
+            const SizedBox(height: 4),
+            const Text(
+              "Max 2MB, PDF/JPG",
+              style: TextStyle(fontSize: 12, color: Colors.grey),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _secondaryButton(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
-        color: Colors.grey.shade100,
-      ),
-      child: Text(text, style: const TextStyle(color: Colors.grey)),
-    );
-  }
-
-  Widget _secondaryButtonWithIcon(String text, IconData icon) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
-        color: Colors.white,
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 18),
-          const SizedBox(width: 6),
-          Text(text),
-        ],
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: () {
+                // aksi pilih file nanti
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black87,
+                side: const BorderSide(color: Colors.black26),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text("Pilih File"),
+            ),
+          ],
+        ),
       ),
     );
   }

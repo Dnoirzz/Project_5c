@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'dataakademik.dart';
+import 'package:portal_mhs/dataorangtua.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: FormPendaftaranScreen(),
+    home: DataAkademikScreen(),
     debugShowCheckedModeBanner: false,
   ));
 }
 
-class FormPendaftaranScreen extends StatelessWidget {
-  const FormPendaftaranScreen({super.key});
+class DataAkademikScreen extends StatelessWidget {
+  const DataAkademikScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,19 +37,20 @@ class FormPendaftaranScreen extends StatelessWidget {
         ],
       ),
 
+      // body form
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 100),
         child: Column(
           children: [
-            // Header
+            // Header dengan efek mengambang
             Container(
-              color: const Color(0xFF2C3E50),
+              color: const Color(0xFF2C3E50), // background gelap di belakang
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF4F6C7A),
+                  color: const Color(0xFF4F6C7A), // warna biru utama
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
@@ -82,7 +83,7 @@ class FormPendaftaranScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: const Text(
-                            "1 dari 5",
+                            "2 dari 5",
                             style: TextStyle(color: Colors.white, fontSize: 12),
                           ),
                         ),
@@ -98,6 +99,7 @@ class FormPendaftaranScreen extends StatelessWidget {
               ),
             ),
 
+            // Tab Navigasi
             // Tab Navigasi
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -118,8 +120,8 @@ class FormPendaftaranScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _tabItem(Icons.person, "Data Pribadi", true),
-                    _tabItem(Icons.school, "Data Akademik", false),
+                    _tabItem(Icons.person, "Data Pribadi", false),
+                    _tabItem(Icons.school, "Data Akademik", true),
                     _tabItem(Icons.group, "Data Orang Tua", false),
                     _tabItem(Icons.upload_file, "Upload Dokumen", false),
                     _tabItem(Icons.check_circle, "Review & Submit", false),
@@ -144,10 +146,10 @@ class FormPendaftaranScreen extends StatelessWidget {
                       children: [
                         const Row(
                           children: [
-                            Icon(Icons.person_outline),
+                            Icon(Icons.school),
                             SizedBox(width: 8),
                             Text(
-                              "Data Pribadi",
+                              "Data Akademik",
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             )
@@ -157,10 +159,27 @@ class FormPendaftaranScreen extends StatelessWidget {
                         const Text("Informasi personal dan kontak",
                             style: TextStyle(fontSize: 12, color: Colors.grey)),
                         const SizedBox(height: 12),
-                        _inputField("Nama Lengkap"),
-                        _inputField("NIK"),
-                        _inputField("Tempat Lahir"),
-                        _inputField("Tanggal Lahir"),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                              color: Color(0xFFF6F6F6),
+                              borderRadius: BorderRadius.circular(8)),
+                          child: const Row(
+                            children: [
+                              Icon(Icons.description_outlined,
+                                  color: Colors.grey),
+                              SizedBox(width: 8),
+                              Expanded(
+                                  child: Text(
+                                "Formulir data akademik akan ditampilkan di sini. ini adalah versi mock untuk demo",
+                                style: TextStyle(fontSize: 12),
+                              ))
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        _inputField("Fakultas"),
+                        _inputField("Program Studi"),
                       ]),
                 ),
               ),
@@ -169,7 +188,7 @@ class FormPendaftaranScreen extends StatelessWidget {
         ),
       ),
 
-      // bagian bawah
+      // bagian bawah (fixed)
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
@@ -180,12 +199,39 @@ class FormPendaftaranScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Baris atas
+            // Baris atas (Sebelumnya + Simpan Draft)
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _secondaryButton("<   Sebelumnya"),
-                _secondaryButtonWithIcon("Simpan Draft", Icons.save_outlined),
+                // Tombol Sebelumnya
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade300),
+                    color: Colors.grey.shade100,
+                  ),
+                  child: const Text("<   Sebelumnya",
+                      style: TextStyle(color: Colors.grey)),
+                ),
+                // Tombol Simpan Draft
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade300),
+                    color: Colors.white,
+                  ),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.save_outlined, size: 18),
+                      SizedBox(width: 6),
+                      Text("Simpan Draft"),
+                    ],
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 10),
@@ -198,7 +244,7 @@ class FormPendaftaranScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const DataAkademikScreen()),
+                        builder: (context) => const DataOrangTuaScreen()),
                   );
                 },
                 child: Container(
@@ -242,7 +288,7 @@ class FormPendaftaranScreen extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         SizedBox(
-          width: 60,
+          width: 60, // biar teks panjang tetap turun ke bawah
           child: Text(
             title,
             textAlign: TextAlign.center,
@@ -292,36 +338,6 @@ class FormPendaftaranScreen extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _secondaryButton(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
-        color: Colors.grey.shade100,
-      ),
-      child: Text(text, style: const TextStyle(color: Colors.grey)),
-    );
-  }
-
-  Widget _secondaryButtonWithIcon(String text, IconData icon) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
-        color: Colors.white,
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 18),
-          const SizedBox(width: 6),
-          Text(text),
         ],
       ),
     );
