@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
-import 'profil_page.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:portal_mhs/dashboard_page.dart'; // pastikan path sesuai
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting(
+    'id_ID',
+    null,
+  ); // Inisialisasi locale Indonesia
   runApp(const MainApp());
 }
 
@@ -10,14 +16,9 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Portal Mahasiswa',
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: const ProfilPage(),
+      home: DashboardPage(), // arahkan ke halaman Dashboard
     );
   }
 }
