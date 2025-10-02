@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'widgets/app_pading.dart';
+import 'profil_page.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    String formattedDate =
-        DateFormat('EEEE, d MMMM yyyy', 'id_ID').format(DateTime.now());
+    String formattedDate = DateFormat(
+      'EEEE, d MMMM yyyy',
+      'id_ID',
+    ).format(DateTime.now());
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         backgroundColor: const Color(0xFF233746),
-        title: const Text(
-          'Dashboard',
-          style: TextStyle(color: Colors.white),
-        ),
+        title: const Text('Dashboard', style: TextStyle(color: Colors.white)),
         leading: Builder(
           builder: (context) => IconButton(
             icon: const Icon(Icons.menu, color: Colors.white),
@@ -24,73 +25,14 @@ class DashboardPage extends StatelessWidget {
           ),
         ),
         actions: [
-          PopupMenuButton<int>(
-            icon: const Icon(Icons.account_circle, color: Colors.white, size: 30),
-            offset: const Offset(0, 55),
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                value: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Aldi Mahendra',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                    ),
-                    Text(
-                      'Mahasiswa@example.com',
-                      style: TextStyle(fontSize: 12, color: Colors.black54),
-                    ),
-                  ],
-                ),
-              ),
-              const PopupMenuDivider(),
-              const PopupMenuItem(
-                value: 2,
-                child: Row(
-                  children: [
-                    Icon(Icons.person_outline, size: 18),
-                    SizedBox(width: 8),
-                    Text(
-                      'Profil',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-              const PopupMenuItem(
-                value: 3,
-                child: Row(
-                  children: [
-                    Icon(Icons.settings_outlined, size: 18),
-                    SizedBox(width: 8),
-                    Text(
-                      'Settings',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-              const PopupMenuItem(
-                value: 4,
-                child: Row(
-                  children: [
-                    Icon(Icons.logout, color: Colors.red, size: 18),
-                    SizedBox(width: 8),
-                    Text(
-                      'Keluar',
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          AppMenus.profileMenu(
             onSelected: (value) {
+              if (value == 2) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ProfilPage()),
+                );
+              }
               if (value == 4) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Logout berhasil')),
@@ -102,104 +44,7 @@ class DashboardPage extends StatelessWidget {
       ),
 
       // ===================== DRAWER PORTAL MAHASISWA =======================
-      drawer: Drawer(
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header dengan logo dan teks
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Row(
-                  children: const [
-                    Icon(Icons.language, size: 30, color: Color(0xFF233746)),
-                    SizedBox(width: 8),
-                    Text(
-                      'Portal Mahasiswa',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF233746),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const Divider(height: 1),
-
-              // Card mini info pengguna
-              Container(
-                width: double.infinity,
-                color: Colors.grey.shade200,
-                padding: const EdgeInsets.all(12),
-                child: Row(
-                  children: [
-                    const CircleAvatar(
-                      radius: 22,
-                      backgroundColor: Colors.grey,
-                      child: Icon(Icons.person, color: Colors.white),
-                    ),
-                    const SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          'Aldi Mahendra',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                        Text(
-                          'NIM: 2024001645',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.black54,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-              // Menu navigasi
-              Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  children: [
-                    _buildDrawerItem(
-                      icon: Icons.dashboard_outlined,
-                      title: 'Dashboard',
-                      bold : true,
-                      onTap: () => Navigator.pop(context),
-                    ),
-                    _buildDrawerItem(
-                      icon: Icons.description_outlined,
-                      title: 'Formulir Pendaftaran',
-                      bold : true,
-                      onTap: () {},
-                    ),
-                    _buildDrawerItem(
-                      icon: Icons.notifications_outlined,
-                      title: 'Pengumuman',
-                      bold : true,
-                      onTap: () {},
-                    ),
-                    _buildDrawerItem(
-                      icon: Icons.help_outline,
-                      title: 'Bantuan',
-                      bold : true,
-                      onTap: () {},
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      drawer: AppMenus.dashboardDrawer(context),
 
       // ===================== BODY DASHBOARD =======================
       body: SingleChildScrollView(
@@ -241,7 +86,9 @@ class DashboardPage extends StatelessWidget {
                         const SizedBox(height: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.yellow.shade700,
                             borderRadius: BorderRadius.circular(8),
@@ -259,7 +106,9 @@ class DashboardPage extends StatelessWidget {
                         Text(
                           formattedDate,
                           style: const TextStyle(
-                              color: Colors.white70, fontSize: 13),
+                            color: Colors.white70,
+                            fontSize: 13,
+                          ),
                         ),
                       ],
                     ),
@@ -287,7 +136,9 @@ class DashboardPage extends StatelessWidget {
                         Text(
                           'Progress Pendaftaran',
                           style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
@@ -323,18 +174,24 @@ class DashboardPage extends StatelessWidget {
                     const SizedBox(height: 4),
                     const Align(
                       alignment: Alignment.centerRight,
-                      child: Text(
-                        '75%',
-                        style: TextStyle(fontSize: 13),
-                      ),
+                      child: Text('75%', style: TextStyle(fontSize: 13)),
                     ),
                     const SizedBox(height: 16),
 
                     const ChecklistItem(title: 'Data Pribadi', completed: true),
-                    const ChecklistItem(title: 'Data Akademik', completed: true),
-                    const ChecklistItem(title: 'Data Orang tua', completed: true),
                     const ChecklistItem(
-                        title: 'Upload Dokumen', completed: false, number: 4),
+                      title: 'Data Akademik',
+                      completed: true,
+                    ),
+                    const ChecklistItem(
+                      title: 'Data Orang tua',
+                      completed: true,
+                    ),
+                    const ChecklistItem(
+                      title: 'Upload Dokumen',
+                      completed: false,
+                      number: 4,
+                    ),
                   ],
                 ),
               ),
@@ -344,27 +201,6 @@ class DashboardPage extends StatelessWidget {
       ),
     );
   }
-}
-
-// Drawer menu helper
-Widget _buildDrawerItem({
-  required IconData icon,
-  required String title,
-  required VoidCallback onTap,
-  bool bold = false,
-}) {
-  return ListTile(
-    leading: Icon(icon, color: Colors.black87),
-    title: Text(
-      title,
-      style: TextStyle(
-        fontSize: 14,
-        fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-        color: Colors.black,
-      ),
-    ),
-    onTap: onTap,
-  );
 }
 
 // Checklist item widget
