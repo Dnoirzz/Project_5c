@@ -182,12 +182,6 @@ class DashboardPage extends StatelessWidget {
                       onTap: () {},
                     ),
                     _buildDrawerItem(
-                      icon: Icons.person_outline,
-                      title: 'Profil Saya',
-                      bold: true,
-                      onTap: () {},
-                    ),
-                    _buildDrawerItem(
                       icon: Icons.notifications_outlined,
                       title: 'Pengumuman',
                       bold : true,
