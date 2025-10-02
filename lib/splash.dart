@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:math';
+
+import 'package:portal_mhs/main.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,7 +13,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     );
@@ -18,75 +21,106 @@ class MyApp extends StatelessWidget {
 }
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
+    with TickerProviderStateMixin {
+  late AnimationController _rotationController;
 
   @override
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
+    _rotationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
-    );
+      duration: const Duration(seconds: 8),
+    )..repeat();
 
-    _scaleAnimation =
-        CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
-
-    _controller.forward();
-
-    Timer(const Duration(seconds: 4), () {
+    Timer(const Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const HomePage()),
+        MaterialPageRoute(builder: (_) => const MainApp()),
       );
     });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _rotationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    double radius = 90;
+    List<String> vectors = [
+      "assets/vector1.png",
+      "assets/vector2.png",
+      "assets/vector3.png",
+      "assets/vector4.png",
+      "assets/vector5.png",
+    ];
+
     return Scaffold(
-      backgroundColor: const Color(0xFF38536A), // warna biru gelap
+      backgroundColor: const Color(0xFF38536A),
       body: Center(
-        child: ScaleTransition(
-          scale: _scaleAnimation,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Ganti dengan asset/logo sesuai desain Figma
-              Icon(Icons.school, size: 80, color: Colors.white),
-              const SizedBox(height: 16),
-              const Text(
-                "Aplikasi Edukasi",
-                style: TextStyle(color: Colors.white, fontSize: 18),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            RotationTransition(
+              turns: _rotationController,
+              child: Stack(
+                alignment: Alignment.center,
+                children: List.generate(vectors.length, (index) {
+                  final angle = (2 * pi / vectors.length) * index;
+
+                  return Transform(
+                    transform: Matrix4.identity()
+                      ..translate(
+                        radius * cos(angle),
+                        radius * sin(angle),
+                      )
+                      // rotasi tambahan agar sisi besar menghadap pusat
+                      ..rotateZ(angle + pi),
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      vectors[index],
+                      width: 80,
+                      height: 80,
+                      color: Colors.white,
+                    ),
+                  );
+                }),
               ),
-            ],
-          ),
+            ),
+            // Icon tengah tetap diam
+            const Icon(
+              Icons.school,
+              size: 60,
+              color: Colors.white,
+            ),
+          ],
         ),
       ),
     );
-  }
-}
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+// class MainApp extends StatelessWidget {
+//   const MainApp({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text("Halaman Utama")),
-    );
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Scaffold(
+//       body: Center(
+//           child: Text(
+//         'MainApp',
+//         style: TextStyle(fontSize: 24),
+//       )),
+//     );
+//   }
+// }
   }
 }

@@ -1,10 +1,10 @@
 name: portal_mhs
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: ^3.7.0
+  sdk: ^3.6.2
 
 dependencies:
   flutter:
@@ -17,3 +17,10 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/
+    - assets/vector1.png
+    - assets/vector2.png
+    - assets/vector3.png
+    - assets/vector4.png
+    - assets/vector5.png
