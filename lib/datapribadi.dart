@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
+    as picker;
+
 import 'dataakademik.dart';
 
 void main() {
@@ -8,8 +11,15 @@ void main() {
   ));
 }
 
-class FormPendaftaranScreen extends StatelessWidget {
+class FormPendaftaranScreen extends StatefulWidget {
   const FormPendaftaranScreen({super.key});
+
+  @override
+  State<FormPendaftaranScreen> createState() => _FormPendaftaranScreenState();
+}
+
+class _FormPendaftaranScreenState extends State<FormPendaftaranScreen> {
+  String? _tanggalLahir;
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +137,6 @@ class FormPendaftaranScreen extends StatelessWidget {
                 ),
               ),
             ),
-
             const SizedBox(height: 12),
 
             // Card Data Pribadi
@@ -136,32 +145,108 @@ class FormPendaftaranScreen extends StatelessWidget {
               child: Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)),
+                color: Colors.white,
                 elevation: 2,
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Row(
+                        children: [
+                          Icon(Icons.person_outline),
+                          SizedBox(width: 8),
+                          Text(
+                            "Data Pribadi",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      const Text("Informasi personal dan kontak",
+                          style: TextStyle(fontSize: 12, color: Colors.grey)),
+                      const SizedBox(height: 12),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF6F6F6),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Row(
                           children: [
-                            Icon(Icons.person_outline),
+                            Icon(Icons.description_outlined,
+                                color: Colors.grey),
                             SizedBox(width: 8),
-                            Text(
-                              "Data Pribadi",
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            Expanded(
+                              child: Text(
+                                "Formulir data pribadi akan ditampilkan di sini. ini adalah versi mock untuk demo",
+                                style: TextStyle(fontSize: 12),
+                              ),
                             )
                           ],
                         ),
-                        const SizedBox(height: 4),
-                        const Text("Informasi personal dan kontak",
-                            style: TextStyle(fontSize: 12, color: Colors.grey)),
-                        const SizedBox(height: 12),
-                        _inputField("Nama Lengkap"),
-                        _inputField("NIK"),
-                        _inputField("Tempat Lahir"),
-                        _inputField("Tanggal Lahir"),
-                      ]),
+                      ),
+                      const SizedBox(height: 16),
+                      _inputField("Nama Lengkap", "Masukkan Nama Lengkap"),
+                      _inputField("NIK", "Masukkan Nomor Induk Kependudukan"),
+                      _inputField("Tempat Lahir", "Masukkan Tempat Lahir"),
+
+                      // Ganti Tanggal Lahir jadi Scroll Picker
+                      const Text(
+                        "Tanggal Lahir",
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      GestureDetector(
+                        onTap: () {
+                          picker.DatePicker.showDatePicker(
+                            context,
+                            showTitleActions: true,
+                            minTime: DateTime(1900, 1, 1),
+                            maxTime: DateTime(2100, 12, 31),
+                            onConfirm: (date) {
+                              setState(() {
+                                _tanggalLahir =
+                                    "${date.day}-${date.month}-${date.year}";
+                              });
+                            },
+                            currentTime: DateTime.now(),
+                            locale: picker.LocaleType.id,
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 12),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.white,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                _tanggalLahir ?? "Pilih Tanggal",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.normal,
+                                  color: _tanggalLahir == null
+                                      ? Colors.grey
+                                      : Colors.black,
+                                ),
+                              ),
+                              const Icon(Icons.calendar_today, size: 18),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -171,26 +256,40 @@ class FormPendaftaranScreen extends StatelessWidget {
 
       // bagian bawah
       bottomNavigationBar: Container(
+        margin: const EdgeInsets.all(12),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border(top: BorderSide(color: Colors.grey.shade300)),
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              offset: const Offset(0, 4),
+              blurRadius: 12,
+            ),
+          ],
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Baris atas
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _secondaryButton("<   Sebelumnya"),
-                _secondaryButtonWithIcon("Simpan Draft", Icons.save_outlined),
+                GestureDetector(
+                  onTap: () {},
+                  child: _secondaryButton("<   Sebelumnya"),
+                ),
+                GestureDetector(
+                  onTap: () {},
+                  child: _secondaryButtonWithIcon(
+                    "Simpan Draft",
+                    Icons.save_outlined,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 10),
-
-            // Tombol Selanjutnya
             Align(
               alignment: Alignment.centerRight,
               child: GestureDetector(
@@ -198,7 +297,8 @@ class FormPendaftaranScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const DataAkademikScreen()),
+                      builder: (context) => const DataAkademikScreen(),
+                    ),
                   );
                 },
                 child: Container(
@@ -208,8 +308,10 @@ class FormPendaftaranScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     color: Colors.black,
                   ),
-                  child: const Text("Selanjutnya   >",
-                      style: TextStyle(color: Colors.white)),
+                  child: const Text(
+                    "Selanjutnya   >",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ),
@@ -257,7 +359,7 @@ class FormPendaftaranScreen extends StatelessWidget {
     );
   }
 
-  Widget _inputField(String label) {
+  Widget _inputField(String label, String hint) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -274,17 +376,23 @@ class FormPendaftaranScreen extends StatelessWidget {
           const SizedBox(height: 6),
           TextFormField(
             decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: const TextStyle(
+                color: Colors.grey,
+                fontSize: 14,
+                fontWeight: FontWeight.normal, // biar sama kaya "Pilih Tanggal"
+              ),
               filled: true,
               fillColor: Colors.white,
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.grey.shade300),
+                borderSide: BorderSide(color: Colors.grey),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.grey.shade300),
+                borderSide: BorderSide(color: Colors.grey),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),

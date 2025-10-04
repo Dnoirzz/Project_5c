@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:portal_mhs/dataakademik.dart';
 import 'package:portal_mhs/uploaddokumen.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: DataOrangTuaScreen(),
-    debugShowCheckedModeBanner: false,
-  ));
-}
-
-class DataOrangTuaScreen extends StatelessWidget {
-  const DataOrangTuaScreen({super.key});
+class ReviewSubmitScreen extends StatelessWidget {
+  const ReviewSubmitScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +30,6 @@ class DataOrangTuaScreen extends StatelessWidget {
         ],
       ),
 
-      // body form
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 100),
         child: Column(
@@ -84,7 +75,7 @@ class DataOrangTuaScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: const Text(
-                            "3 dari 5",
+                            "5 dari 5",
                             style: TextStyle(color: Colors.white, fontSize: 12),
                           ),
                         ),
@@ -122,9 +113,9 @@ class DataOrangTuaScreen extends StatelessWidget {
                   children: [
                     _tabItem(Icons.person, "Data Pribadi", false),
                     _tabItem(Icons.school, "Data Akademik", false),
-                    _tabItem(Icons.group, "Data Orang Tua", true),
+                    _tabItem(Icons.group, "Data Orang Tua", false),
                     _tabItem(Icons.upload_file, "Upload Dokumen", false),
-                    _tabItem(Icons.check_circle, "Review & Submit", false),
+                    _tabItem(Icons.check_circle, "Review & Submit", true),
                   ],
                 ),
               ),
@@ -132,76 +123,37 @@ class DataOrangTuaScreen extends StatelessWidget {
 
             const SizedBox(height: 12),
 
-            // Card Data Orang Tua
-            // Card Data Orang Tua
+            // Review Card
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
-                color: Colors.white,
-                elevation: 2,
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Row(
-                        children: [
-                          Icon(Icons.group),
-                          SizedBox(width: 8),
-                          Text(
-                            "Data Orang Tua",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      const Text(
-                        "Informasi personal dan kontak",
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
-                      ),
-                      const SizedBox(height: 12),
-
-                      // Tambahan deskripsi abu-abu sama seperti page Akademik
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFF6F6F6),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Row(
-                          children: [
-                            Icon(Icons.description_outlined,
-                                color: Colors.grey),
-                            SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                "Formulir data orang tua akan ditampilkan di sini. ini adalah versi mock untuk demo",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-
-                      const SizedBox(height: 16),
-                      _inputField("Nama Ayah", "Masukkan Nama Ayah"),
-                      _inputField("Nama Ibu", "Masukkan Nama Ibu"),
-                      _inputField("Nomor HP", "Masukkan Nomor HP Orang Tua"),
-                      _inputField("Pekerjaan Ayah", "Masukkan Pekerjaan Ayah"),
-                      _inputField("Pekerjaan Ibu", "Masukkan Pekerjaan Ibu"),
-                    ],
+              child: Column(
+                children: [
+                  _reviewCard(
+                    "Review & Submit",
+                    "Periksa dan kirim data",
+                    child: const Text(
+                      "Fitur upload dokumen akan ditampilkan di sini, ini adalah versi mock untuk demo",
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
                   ),
-                ),
+                  _reviewCard(
+                      "Data Pribadi", "Nama, NIK dan informasi pribadi lainnya",
+                      isChecked: true),
+                  _reviewCard("Data Akademik",
+                      "Fakultas, program studi dan jalur masuk",
+                      isChecked: true),
+                  _reviewCard("Data Orang tua", "Informasi orang tua dan wali",
+                      isChecked: true),
+                  _reviewCard("Dokumen", "*Dokumen telah diupload",
+                      isChecked: true),
+                ],
               ),
-            ),
+            )
           ],
         ),
       ),
 
-      // bagian bawah (floating)
+      // Navigasi Bawah (Sebelumnya, Draft, Selanjutnya)
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -222,17 +174,17 @@ class DataOrangTuaScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Baris atas (Sebelumnya + Simpan Draft)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Tombol Sebelumnya
+                    // Sebelumnya
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const DataAkademikScreen()),
+                              builder: (context) =>
+                                  const DataDokumenScreen()), // kembali ke dokumen
                         );
                       },
                       child: Container(
@@ -241,18 +193,20 @@ class DataOrangTuaScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(color: Colors.grey.shade300),
-                          color: const Color.fromARGB(255, 255, 255, 255),
+                          color: Colors.white,
                         ),
-                        child: const Text(
-                          "<   Sebelumnya",
-                          style: TextStyle(color: Colors.black87),
-                        ),
+                        child: const Text("<   Sebelumnya",
+                            style: TextStyle(color: Colors.black87)),
                       ),
                     ),
-                    // Tombol Simpan Draft
+
+                    // Simpan Draft
                     GestureDetector(
                       onTap: () {
-                        // aksi simpan draft
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text("Draft berhasil disimpan!")),
+                        );
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -274,15 +228,14 @@ class DataOrangTuaScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
-                // Tombol Selanjutnya
+
+                // Selanjutnya (Kirim)
                 Align(
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const DataDokumenScreen()),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Data berhasil dikirim!")),
                       );
                     },
                     child: Container(
@@ -290,12 +243,12 @@ class DataOrangTuaScreen extends StatelessWidget {
                           vertical: 12, horizontal: 24),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        color: Colors.black,
+                        color: const Color.fromARGB(255, 0, 145, 55),
                       ),
-                      child: const Text(
-                        "Selanjutnya   >",
-                        style: TextStyle(color: Colors.white),
-                      ),
+                      child: const Text("Daftar Sekarang>",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ),
@@ -345,46 +298,47 @@ class DataOrangTuaScreen extends StatelessWidget {
     );
   }
 
-  Widget _inputField(String label, String hint) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+  Widget _reviewCard(String title, String desc,
+      {Widget? child, bool isChecked = false}) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade300),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            offset: const Offset(0, 2),
+            blurRadius: 4,
+          )
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-              color: Colors.black87,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+              ),
+              if (isChecked)
+                const Icon(Icons.check, color: Colors.green, size: 18),
+            ],
           ),
-          const SizedBox(height: 6),
-          TextFormField(
-            decoration: InputDecoration(
-              hintText: hint,
-              hintStyle: const TextStyle(
-                color: Colors.grey,
-                fontSize: 14,
-              ),
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.grey.shade300),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.grey.shade300),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Colors.blue, width: 1.5),
-              ),
-            ),
-          ),
+          const SizedBox(height: 4),
+          Text(desc, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+          if (child != null) ...[
+            const SizedBox(height: 8),
+            child,
+          ]
         ],
       ),
     );

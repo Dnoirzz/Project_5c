@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portal_mhs/dataorangtua.dart';
+import 'package:portal_mhs/datapribadi.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -36,21 +37,19 @@ class DataAkademikScreen extends StatelessWidget {
           )
         ],
       ),
-
-      // body form
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 100),
         child: Column(
           children: [
-            // Header dengan efek mengambang
+            // Header
             Container(
-              color: const Color(0xFF2C3E50), // background gelap di belakang
+              color: const Color(0xFF2C3E50),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF4F6C7A), // warna biru utama
+                  color: const Color(0xFF4F6C7A),
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
@@ -100,7 +99,6 @@ class DataAkademikScreen extends StatelessWidget {
             ),
 
             // Tab Navigasi
-            // Tab Navigasi
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Container(
@@ -132,12 +130,13 @@ class DataAkademikScreen extends StatelessWidget {
 
             const SizedBox(height: 12),
 
-            // Card Data Pribadi
+            // Card Data Akademik
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)),
+                color: Colors.white,
                 elevation: 2,
                 child: Padding(
                   padding: const EdgeInsets.all(16),
@@ -178,8 +177,8 @@ class DataAkademikScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        _inputField("Fakultas"),
-                        _inputField("Program Studi"),
+                        _inputField("Fakultas", "Masukkan Fakultas"),
+                        _inputField("Program Studi", "Masukkan Program Studi"),
                       ]),
                 ),
               ),
@@ -187,79 +186,103 @@ class DataAkademikScreen extends StatelessWidget {
           ],
         ),
       ),
-
-      // bagian bawah (fixed)
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(top: BorderSide(color: Colors.grey.shade300)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Baris atas (Sebelumnya + Simpan Draft)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Tombol Sebelumnya
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey.shade300),
-                    color: Colors.grey.shade100,
-                  ),
-                  child: const Text("<   Sebelumnya",
-                      style: TextStyle(color: Colors.grey)),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  offset: const Offset(0, 4),
+                  blurRadius: 12,
                 ),
-                // Tombol Simpan Draft
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.grey.shade300),
-                    color: Colors.white,
-                  ),
-                  child: const Row(
-                    children: [
-                      Icon(Icons.save_outlined, size: 18),
-                      SizedBox(width: 6),
-                      Text("Simpan Draft"),
-                    ],
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const FormPendaftaranScreen(),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey.shade300),
+                          color: const Color.fromARGB(255, 255, 255, 255),
+                        ),
+                        child: const Text(
+                          "<   Sebelumnya",
+                          style: TextStyle(color: Colors.black87),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        // Arahkan nanti
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey.shade300),
+                          color: Colors.white,
+                        ),
+                        child: const Row(
+                          children: [
+                            Icon(Icons.save_outlined, size: 18),
+                            SizedBox(width: 6),
+                            Text("Simpan Draft"),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const DataOrangTuaScreen()),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 24),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.black,
+                      ),
+                      child: const Text(
+                        "Selanjutnya   >",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 10),
-
-            // Tombol Selanjutnya
-            Align(
-              alignment: Alignment.centerRight,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const DataOrangTuaScreen()),
-                  );
-                },
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.black,
-                  ),
-                  child: const Text("Selanjutnya   >",
-                      style: TextStyle(color: Colors.white)),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -288,7 +311,7 @@ class DataAkademikScreen extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         SizedBox(
-          width: 60, // biar teks panjang tetap turun ke bawah
+          width: 60,
           child: Text(
             title,
             textAlign: TextAlign.center,
@@ -303,7 +326,7 @@ class DataAkademikScreen extends StatelessWidget {
     );
   }
 
-  Widget _inputField(String label) {
+  Widget _inputField(String label, String hint) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -320,6 +343,11 @@ class DataAkademikScreen extends StatelessWidget {
           const SizedBox(height: 6),
           TextFormField(
             decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: const TextStyle(
+                fontSize: 14,
+                color: Colors.grey, // sama seperti "Pilih Tanggal"
+              ),
               filled: true,
               fillColor: Colors.white,
               contentPadding:
