@@ -1,25 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
-    as picker;
-
-import 'dataakademik.dart';
+import 'package:portal_mhs/dataakademik.dart';
+import 'package:portal_mhs/uploaddokumen.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: FormPendaftaranScreen(),
+    home: DataOrangTuaScreen(),
     debugShowCheckedModeBanner: false,
   ));
 }
 
-class FormPendaftaranScreen extends StatefulWidget {
-  const FormPendaftaranScreen({super.key});
-
-  @override
-  State<FormPendaftaranScreen> createState() => _FormPendaftaranScreenState();
-}
-
-class _FormPendaftaranScreenState extends State<FormPendaftaranScreen> {
-  String? _tanggalLahir;
+class DataOrangTuaScreen extends StatelessWidget {
+  const DataOrangTuaScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +38,7 @@ class _FormPendaftaranScreenState extends State<FormPendaftaranScreen> {
         ],
       ),
 
+      // body form
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 100),
         child: Column(
@@ -92,7 +84,7 @@ class _FormPendaftaranScreenState extends State<FormPendaftaranScreen> {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: const Text(
-                            "1 dari 5",
+                            "3 dari 5",
                             style: TextStyle(color: Colors.white, fontSize: 12),
                           ),
                         ),
@@ -128,18 +120,20 @@ class _FormPendaftaranScreenState extends State<FormPendaftaranScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    _tabItem(Icons.person, "Data Pribadi", true),
+                    _tabItem(Icons.person, "Data Pribadi", false),
                     _tabItem(Icons.school, "Data Akademik", false),
-                    _tabItem(Icons.group, "Data Orang Tua", false),
+                    _tabItem(Icons.group, "Data Orang Tua", true),
                     _tabItem(Icons.upload_file, "Upload Dokumen", false),
                     _tabItem(Icons.check_circle, "Review & Submit", false),
                   ],
                 ),
               ),
             ),
+
             const SizedBox(height: 12),
 
-            // Card Data Pribadi
+            // Card Data Orang Tua
+            // Card Data Orang Tua
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Card(
@@ -154,19 +148,23 @@ class _FormPendaftaranScreenState extends State<FormPendaftaranScreen> {
                     children: [
                       const Row(
                         children: [
-                          Icon(Icons.person_outline),
+                          Icon(Icons.group),
                           SizedBox(width: 8),
                           Text(
-                            "Data Pribadi",
+                            "Data Orang Tua",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           )
                         ],
                       ),
                       const SizedBox(height: 4),
-                      const Text("Informasi personal dan kontak",
-                          style: TextStyle(fontSize: 12, color: Colors.grey)),
+                      const Text(
+                        "Informasi personal dan kontak",
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
                       const SizedBox(height: 12),
+
+                      // Tambahan deskripsi abu-abu sama seperti page Akademik
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
@@ -180,71 +178,20 @@ class _FormPendaftaranScreenState extends State<FormPendaftaranScreen> {
                             SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                "Formulir data pribadi akan ditampilkan di sini. ini adalah versi mock untuk demo",
+                                "Formulir data orang tua akan ditampilkan di sini. ini adalah versi mock untuk demo",
                                 style: TextStyle(fontSize: 12),
                               ),
                             )
                           ],
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      _inputField("Nama Lengkap", "Masukkan Nama Lengkap"),
-                      _inputField("NIK", "Masukkan Nomor Induk Kependudukan"),
-                      _inputField("Tempat Lahir", "Masukkan Tempat Lahir"),
 
-                      // Ganti Tanggal Lahir jadi Scroll Picker
-                      const Text(
-                        "Tanggal Lahir",
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      GestureDetector(
-                        onTap: () {
-                          picker.DatePicker.showDatePicker(
-                            context,
-                            showTitleActions: true,
-                            minTime: DateTime(1900, 1, 1),
-                            maxTime: DateTime(2100, 12, 31),
-                            onConfirm: (date) {
-                              setState(() {
-                                _tanggalLahir =
-                                    "${date.day}-${date.month}-${date.year}";
-                              });
-                            },
-                            currentTime: DateTime.now(),
-                            locale: picker.LocaleType.id,
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 14, horizontal: 12),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey.shade300),
-                            borderRadius: BorderRadius.circular(8),
-                            color: Colors.white,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                _tanggalLahir ?? "Pilih Tanggal",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal,
-                                  color: _tanggalLahir == null
-                                      ? Colors.grey
-                                      : Colors.black,
-                                ),
-                              ),
-                              const Icon(Icons.calendar_today, size: 18),
-                            ],
-                          ),
-                        ),
-                      ),
+                      const SizedBox(height: 16),
+                      _inputField("Nama Ayah", "Masukkan Nama Ayah"),
+                      _inputField("Nama Ibu", "Masukkan Nama Ibu"),
+                      _inputField("Nomor HP", "Masukkan Nomor HP Orang Tua"),
+                      _inputField("Pekerjaan Ayah", "Masukkan Pekerjaan Ayah"),
+                      _inputField("Pekerjaan Ibu", "Masukkan Pekerjaan Ibu"),
                     ],
                   ),
                 ),
@@ -254,68 +201,107 @@ class _FormPendaftaranScreenState extends State<FormPendaftaranScreen> {
         ),
       ),
 
-      // bagian bawah
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.all(12),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              offset: const Offset(0, 4),
-              blurRadius: 12,
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {},
-                  child: _secondaryButton("<   Sebelumnya"),
+      // bagian bawah (floating)
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  offset: const Offset(0, 4),
+                  blurRadius: 12,
                 ),
-                GestureDetector(
-                  onTap: () {},
-                  child: _secondaryButtonWithIcon(
-                    "Simpan Draft",
-                    Icons.save_outlined,
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Baris atas (Sebelumnya + Simpan Draft)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Tombol Sebelumnya
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const DataAkademikScreen()),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey.shade300),
+                          color: const Color.fromARGB(255, 255, 255, 255),
+                        ),
+                        child: const Text(
+                          "<   Sebelumnya",
+                          style: TextStyle(color: Colors.black87),
+                        ),
+                      ),
+                    ),
+                    // Tombol Simpan Draft
+                    GestureDetector(
+                      onTap: () {
+                        // aksi simpan draft
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.grey.shade300),
+                          color: Colors.white,
+                        ),
+                        child: const Row(
+                          children: [
+                            Icon(Icons.save_outlined, size: 18),
+                            SizedBox(width: 6),
+                            Text("Simpan Draft"),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                // Tombol Selanjutnya
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const DataDokumenScreen()),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 24),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.black,
+                      ),
+                      child: const Text(
+                        "Selanjutnya   >",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 10),
-            Align(
-              alignment: Alignment.centerRight,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const DataAkademikScreen(),
-                    ),
-                  );
-                },
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.black,
-                  ),
-                  child: const Text(
-                    "Selanjutnya   >",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -380,7 +366,6 @@ class _FormPendaftaranScreenState extends State<FormPendaftaranScreen> {
               hintStyle: const TextStyle(
                 color: Colors.grey,
                 fontSize: 14,
-                fontWeight: FontWeight.normal, // biar sama kaya "Pilih Tanggal"
               ),
               filled: true,
               fillColor: Colors.white,
@@ -388,11 +373,11 @@ class _FormPendaftaranScreenState extends State<FormPendaftaranScreen> {
                   const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.grey),
+                borderSide: BorderSide(color: Colors.grey.shade300),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide(color: Colors.grey),
+                borderSide: BorderSide(color: Colors.grey.shade300),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -400,36 +385,6 @@ class _FormPendaftaranScreenState extends State<FormPendaftaranScreen> {
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _secondaryButton(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
-        color: Colors.grey.shade100,
-      ),
-      child: Text(text, style: const TextStyle(color: Colors.grey)),
-    );
-  }
-
-  Widget _secondaryButtonWithIcon(String text, IconData icon) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300),
-        color: Colors.white,
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 18),
-          const SizedBox(width: 6),
-          Text(text),
         ],
       ),
     );
